@@ -1,0 +1,35 @@
+# ports :
+#   - port ที่ข้างนอกใช้ Access เข้ามา : port ที่ภายในใช้เรียกหากัน (อ่านเพิ่มเติมของ Riffy มีบอก)
+version: "3.3"
+services:
+  goservice:
+    build: "."
+    ports:
+      - "1234:8080"
+  nginx:
+    build: "./nginx"
+    ports:
+      - "80:80"
+    depends_on:
+      - "goservice"
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      CONFIGS: "listen_addresses:'*'"
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8888:8080
+
+volumes:
+  dbdata:
+    driver: local
