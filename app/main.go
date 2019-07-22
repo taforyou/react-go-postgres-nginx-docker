@@ -2,10 +2,10 @@ package main
 
 import (
 	"level11api"
-
+	//"level11infrastructure"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	//"level11infrastructure"
+	
 )
 
 func main() {
@@ -25,4 +25,6 @@ func main() {
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8081"))
+	// ตอนที่ TEST ใช้ 8082 เพื่อไม่ให้ชน
+	//e.Logger.Fatal(e.Start(":8081"))
 }

@@ -4,13 +4,16 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 
 	_ "github.com/lib/pq"
 )
 
 const (
-	host = "localhost"
+	host     = "localhost"
+	port     = 5432
+	user     = "postgres"
+	password = "docker"
+	dbname   = "checkCardId"
 )
 
 type SqlHandler struct {
@@ -75,7 +78,7 @@ func Query(params map[interface{}]interface{}) []User {
 func ConnDB() {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
-		host, os.Getenv("POSTGRES_PORT"), os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DB"))
+		host, port, user, password, dbname)
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
@@ -91,6 +94,6 @@ func ConnDB() {
 	sqliteHandler.Conn = db
 
 	// ตรงนี้ยัง เรียกคำสั่งนี้ไม่ได้เพราะไม่งั้น database มันจะปิด ต้องไปหาทางเรียกคำสั่งนี้ที่อื่น
-	//defer db.Close()
+	// defer db.Close()
 
 }

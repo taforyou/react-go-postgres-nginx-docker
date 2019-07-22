@@ -25,12 +25,42 @@ services:
       - backend
   db:
     image: postgres
+    restart: always
+    # เพื่ิมขึ้นมาเพื่อเก็บ Volume ของ Database เพราะไม่อย่างนั้น ตอน docker-compose down ข้อมูลมันจะหาย
+    # ลองทดสอบวิธีการ map data เข้ากับ Physical Location
+    # volumes:
+    #   - "dbdata:/var/lib/postgresql/data"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: docker
-      POSTGRES_DB: god_db
+      CONFIGS: "listen_addresses:'*'"
+    ports:
+      - 5432:5432
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - "dbdata:/var/lib/postgresql/data"
+    networks:
+      - backend
+    # volumes:
+    #   - ./postgres-data:/var/lib/postgresql/data
+    #   - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8888:8080
+    networks:
+      - backend
+  # db:
+  #   image: postgres
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: docker
+  #     POSTGRES_DB: checkCardId
+  #   volumes:
+  #     - ./postgres-data:/var/lib/postgresql/data
+  #     - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
 networks:
   backend:
+volumes:
+  dbdata:
+    driver: local
