@@ -16,16 +16,12 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.Static("/", "static")
+	//e.Static("/", "static")
 
 	// Routes
-	e.POST("/users", level11api.CreateUser)
-	e.GET("/users", level11api.GetUsers)
 	e.GET("/test", level11api.TestFetch)
-	// การบ้านอูด้ง ไป Query คนเดียวมา
-	// การบ้านอู้ง ไป Edit คนเดียวมา
-	// ไปลบคนเดียวมา
-	// ลบ เฉพาะ
+	e.GET("/requestCheckId", level11api.RequestCheckId)
+	
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8081"))
